@@ -7,7 +7,7 @@
 //
 
 #import "MainScene.h"
-static const CGFloat scrollSpeed = 80.f;
+static const CGFloat scrollSpeed = 75.f;
 @implementation MainScene {
     CCSprite *_hero;
     CCPhysicsNode *_physicsNode;
@@ -17,7 +17,13 @@ static const CGFloat scrollSpeed = 80.f;
 }
 - (void)didLoadFromCCB {
     _grounds = @[_ground1, _ground2];
+    self.userInteractionEnabled = TRUE;
 }
+
+- (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    [_hero.physicsBody applyImpulse:ccp(0, 600.f)];
+}
+
 - (void)update:(CCTime)delta {
     _hero.position = ccp(_hero.position.x + delta * scrollSpeed, _hero.position.y);
     _physicsNode.position = ccp(_physicsNode.position.x - (scrollSpeed *delta), _physicsNode.position.y);
@@ -32,5 +38,8 @@ static const CGFloat scrollSpeed = 80.f;
             ground.position = ccp(ground.position.x + 2 * ground.contentSize.width, ground.position.y);
         }
     }
+    // clamp velocity
+    float yVelocity = clampf(_hero.physicsBody.velocity.y, -1 * MAXFLOAT, 200.f);
+    _hero.physicsBody.velocity = ccp(0, yVelocity);
 }
 @end
