@@ -19,13 +19,21 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
     CCPhysicsNode *_physicsNode;
     CCNode *_ground1;
     CCNode *_ground2;
+    CCNode *_ground_small1;
+    CCNode *_ground_small2;
     NSArray *_grounds;
+    NSArray *_grounds_small;
     NSMutableArray *_obstacles;
 }
 - (void)didLoadFromCCB {
     self.userInteractionEnabled = TRUE;
     _grounds = @[_ground1, _ground2];
+    _grounds_small = @[_ground_small1, _ground_small2];
     for (CCNode *ground in _grounds) {
+        // set collision txpe
+        ground.physicsBody.collisionType = @"level";
+    }
+    for (CCNode *ground in _grounds_small) {
         // set collision txpe
         ground.physicsBody.collisionType = @"level";
     }
@@ -40,7 +48,7 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
 }
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    [_hero.physicsBody applyImpulse:ccp(0, 800.f)];
+    _hero.physicsNode.position = ccp(_physicsNode.position.x, 255);
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero house:(CCNode *)house {
@@ -66,6 +74,16 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
     _physicsNode.position = ccp(_physicsNode.position.x - (scrollSpeed *delta), _physicsNode.position.y);
     // loop the ground
     for (CCNode *ground in _grounds) {
+        // get the world position of the ground
+        CGPoint groundWorldPosition = [_physicsNode convertToWorldSpace:ground.position];
+        // get the screen position of the ground
+        CGPoint groundScreenPosition = [self convertToNodeSpace:groundWorldPosition];
+        // if the left corner is one complete width off the screen, move it to the right
+        if (groundScreenPosition.x <= (-1 * ground.contentSize.width)) {
+            ground.position = ccp(ground.position.x + 2 * ground.contentSize.width, ground.position.y);
+        }
+    }
+    for (CCNode *ground in _grounds_small) {
         // get the world position of the ground
         CGPoint groundWorldPosition = [_physicsNode convertToWorldSpace:ground.position];
         // get the screen position of the ground
