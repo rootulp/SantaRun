@@ -7,7 +7,11 @@
 //
 
 #import "MainScene.h"
-
-@implementation MainScene
-
+static const CGFloat scrollSpeed = 80.f;
+@implementation MainScene {
+    CCSprite *_hero;
+}
+- (void)update:(CCTime)delta {
+    _hero.position = ccp(_hero.position.x + delta * scrollSpeed, _hero.position.y);
+}
 @end
