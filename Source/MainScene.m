@@ -8,11 +8,17 @@
 
 #import "MainScene.h"
 #import "Obstacle.h"
+#import "Present.h"
 
 static const CGFloat scrollSpeed = 75.f;
-static const CGFloat firstObstaclePosition = 300.f;
-static const CGFloat distanceBetweenObstacles = 300.f;
+static const CGFloat firstObstaclePosition = 150.f;
+static const CGFloat firstPresentPosition = 150.f;
+static const CGFloat distanceBetweenObstacles = 150.f;
 static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
+static const CGFloat distanceBetweenObstacleAndCeiling = 225.f;
+static const CGFloat distanceBetweenPresents = 150.f;
+static const CGFloat distanceBetweenPresentAndFloor = 87.f;
+static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
 
 @implementation MainScene {
     CCSprite *_hero;
@@ -24,6 +30,9 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
     NSArray *_grounds;
     NSArray *_grounds_small;
     NSMutableArray *_obstacles;
+    NSMutableArray *_presents;
+    NSInteger _points;
+    CCLabelTTF *_scoreLabel;
 }
 - (void)didLoadFromCCB {
     self.userInteractionEnabled = TRUE;
@@ -42,13 +51,19 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
     // set collision txpe
     _hero.physicsBody.collisionType = @"hero";
     _obstacles = [NSMutableArray array];
-    [self spawnNewObstacle];
-    [self spawnNewObstacle];
-    [self spawnNewObstacle];
+    _presents = [NSMutableArray array];
+    [self spawnBoth];
+    [self spawnBoth];
+    [self spawnBoth];
 }
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    _hero.physicsNode.position = ccp(_physicsNode.position.x, 255);
+    if (_hero.position.y > 200) {
+        _hero.position = ccp(_hero.position.x, 118);
+    } else {
+        _hero.position = ccp(_hero.position.x, 255);
+    }
+    
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero house:(CCNode *)house {
@@ -56,7 +71,28 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
     return TRUE;
 }
 
-- (void)spawnNewObstacle {
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero present:(CCNode *)present {
+    [present removeFromParent];
+    NSLog(@"CONTACT");
+    _points++;
+    _scoreLabel.string = [NSString stringWithFormat:@"%d", _points];
+    return TRUE;
+}
+
+- (void)spawnBoth {
+    #define ARC4RANDOM_MAX      0x100000000
+    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
+    if (random > .5) {
+        
+        [self spawnNewObstacle:(BOOL) true ];
+        [self spawnNewPresent:(BOOL) false];
+    } else {
+        [self spawnNewPresent:(BOOL) true];
+        [self spawnNewObstacle:(BOOL) false];
+    }
+}
+
+- (void)spawnNewObstacle:(BOOL)top {
     CCNode *previousObstacle = [_obstacles lastObject];
     CGFloat previousObstacleXPosition = previousObstacle.position.x;
     if (!previousObstacle) {
@@ -64,9 +100,31 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
         previousObstacleXPosition = firstObstaclePosition;
     }
     CCNode *obstacle = [CCBReader load:@"Obstacle"];
-    obstacle.position = ccp(previousObstacleXPosition + distanceBetweenObstacles, distanceBetweenObstacleAndFloor);
+    if (top) {
+        obstacle.position = ccp(previousObstacleXPosition + distanceBetweenObstacles, distanceBetweenObstacleAndCeiling);
+    } else {
+        obstacle.position = ccp(previousObstacleXPosition + distanceBetweenObstacles, distanceBetweenObstacleAndFloor);
+    }
     [_physicsNode addChild:obstacle];
     [_obstacles addObject:obstacle];
+}
+
+- (void)spawnNewPresent:(BOOL)top {
+    CCNode *previousPresent = [_presents lastObject];
+    CGFloat previousPresentXPosition = previousPresent.position.x;
+    if (!previousPresent) {
+        // this is the first present
+        previousPresentXPosition = firstPresentPosition;
+    }
+    CCNode *present = [CCBReader load:@"Present"];
+    if (top) {
+        present.position = ccp(previousPresentXPosition + distanceBetweenPresents, distanceBetweenPresentAndCeiling);
+    } else {
+        present.position = ccp(previousPresentXPosition + distanceBetweenPresents, distanceBetweenPresentAndFloor);
+    }
+    
+    [_physicsNode addChild:present];
+    [_presents addObject:present];
 }
 
 - (void)update:(CCTime)delta {
@@ -112,7 +170,8 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
         [obstacleToRemove removeFromParent];
         [_obstacles removeObject:obstacleToRemove];
         // for each removed obstacle, add a new one
-        [self spawnNewObstacle];
+        [self spawnBoth];
     }
+    
 }
 @end

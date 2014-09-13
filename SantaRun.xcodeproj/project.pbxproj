@@ -37,6 +37,7 @@
 		B77F1B4017B978D7009739AE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77F1B3F17B978D7009739AE /* CoreGraphics.framework */; };
 		B77F1B4217B978D7009739AE /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77F1B4117B978D7009739AE /* CoreText.framework */; };
 		F501850F19C4BE3000C9B339 /* Obstacle.m in Sources */ = {isa = PBXBuildFile; fileRef = F501850E19C4BE3000C9B339 /* Obstacle.m */; };
+		F501851319C4EEB000C9B339 /* Present.m in Sources */ = {isa = PBXBuildFile; fileRef = F501851219C4EEB000C9B339 /* Present.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,8 @@
 		B7B3713D180358F1007369CC /* libObjectiveChipmunk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libObjectiveChipmunk.a; path = "../libs/cocos2d-iphone/external/Chipmunk/xcode/build/Debug-iphoneos/libObjectiveChipmunk.a"; sourceTree = "<group>"; };
 		F501850D19C4BE3000C9B339 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Obstacle.h; path = Source/Obstacle.h; sourceTree = "<group>"; };
 		F501850E19C4BE3000C9B339 /* Obstacle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Obstacle.m; path = Source/Obstacle.m; sourceTree = "<group>"; };
+		F501851119C4EEB000C9B339 /* Present.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Present.h; path = Source/Present.h; sourceTree = "<group>"; };
+		F501851219C4EEB000C9B339 /* Present.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Present.m; path = Source/Present.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +133,8 @@
 			children = (
 				F501850D19C4BE3000C9B339 /* Obstacle.h */,
 				F501850E19C4BE3000C9B339 /* Obstacle.m */,
+				F501851119C4EEB000C9B339 /* Present.h */,
+				F501851219C4EEB000C9B339 /* Present.m */,
 				B737893D1807617C0076A88C /* AppDelegate.h */,
 				B737893E1807617C0076A88C /* AppDelegate.m */,
 				B7378992180767190076A88C /* MainScene.h */,
@@ -347,6 +352,7 @@
 			files = (
 				B737893F1807617C0076A88C /* AppDelegate.m in Sources */,
 				B7378994180767190076A88C /* MainScene.m in Sources */,
+				F501851319C4EEB000C9B339 /* Present.m in Sources */,
 				F501850F19C4BE3000C9B339 /* Obstacle.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 			);
