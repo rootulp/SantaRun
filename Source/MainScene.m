@@ -7,9 +7,11 @@
 //
 
 #import "MainScene.h"
+#import "Obstacle.h"
+
 static const CGFloat scrollSpeed = 75.f;
-static const CGFloat firstObstaclePosition = 280.f;
-static const CGFloat distanceBetweenObstacles = 160.f;
+static const CGFloat firstObstaclePosition = 300.f;
+static const CGFloat distanceBetweenObstacles = 300.f;
 static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
 
 @implementation MainScene {
@@ -21,8 +23,16 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
     NSMutableArray *_obstacles;
 }
 - (void)didLoadFromCCB {
-    _grounds = @[_ground1, _ground2];
     self.userInteractionEnabled = TRUE;
+    _grounds = @[_ground1, _ground2];
+    for (CCNode *ground in _grounds) {
+        // set collision txpe
+        ground.physicsBody.collisionType = @"level";
+    }
+    // set this class as delegate
+    _physicsNode.collisionDelegate = self;
+    // set collision txpe
+    _hero.physicsBody.collisionType = @"hero";
     _obstacles = [NSMutableArray array];
     [self spawnNewObstacle];
     [self spawnNewObstacle];
@@ -30,7 +40,12 @@ static const CGFloat distanceBetweenObstacleAndFloor = 87.f;
 }
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    [_hero.physicsBody applyImpulse:ccp(0, 600.f)];
+    [_hero.physicsBody applyImpulse:ccp(0, 800.f)];
+}
+
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero house:(CCNode *)house {
+    NSLog(@"Game Over");
+    return TRUE;
 }
 
 - (void)spawnNewObstacle {

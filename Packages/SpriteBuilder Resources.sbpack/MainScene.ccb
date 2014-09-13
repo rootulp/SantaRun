@@ -10,7 +10,7 @@
 		<false/>
 	</dict>
 	<key>UUID</key>
-	<integer>15</integer>
+	<integer>19</integer>
 	<key>centeredOrigin</key>
 	<false/>
 	<key>currentResolution</key>
@@ -228,7 +228,7 @@
 				<array>
 					<dict>
 						<key>UUID</key>
-						<integer>7</integer>
+						<integer>18</integer>
 						<key>baseClass</key>
 						<string>CCBFile</string>
 						<key>children</key>
@@ -273,14 +273,14 @@
 								</array>
 								<array>
 									<real>0.0</real>
-									<real>75</real>
+									<real>56</real>
 								</array>
 								<array>
-									<real>75</real>
-									<real>75</real>
+									<real>45</real>
+									<real>56</real>
 								</array>
 								<array>
-									<real>75</real>
+									<real>45</real>
 									<real>0.0</real>
 								</array>
 							</array>
@@ -288,16 +288,16 @@
 							<array>
 								<array>
 									<array>
-										<real>75</real>
+										<real>45</real>
 										<real>0.0</real>
 									</array>
 									<array>
-										<real>75</real>
-										<real>75</real>
+										<real>45</real>
+										<real>56</real>
 									</array>
 									<array>
 										<real>0.0</real>
-										<real>75</real>
+										<real>56</real>
 									</array>
 									<array>
 										<real>0.0</real>
@@ -323,8 +323,8 @@
 								<string>Position</string>
 								<key>value</key>
 								<array>
-									<real>144</real>
-									<real>271</real>
+									<real>85</real>
+									<real>118</real>
 									<integer>0</integer>
 									<integer>0</integer>
 									<integer>0</integer>
@@ -349,7 +349,7 @@
 								<key>type</key>
 								<string>CCBFile</string>
 								<key>value</key>
-								<string>Hero.ccb</string>
+								<string>Hero2.ccb</string>
 							</dict>
 						</array>
 					</dict>
@@ -739,7 +739,7 @@
 						<key>value</key>
 						<array>
 							<real>0.0</real>
-							<real>-100</real>
+							<real>-300</real>
 						</array>
 					</dict>
 					<dict>
@@ -751,6 +751,8 @@
 						<real>0.5</real>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 		</array>
 		<key>customClass</key>
@@ -892,7 +894,7 @@
 			<key>offset</key>
 			<real>0.0</real>
 			<key>position</key>
-			<real>0.0</real>
+			<real>2.5666666030883789</real>
 			<key>resolution</key>
 			<real>30</real>
 			<key>scale</key>
