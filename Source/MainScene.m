@@ -35,6 +35,7 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
     NSMutableArray *_presents;
     NSInteger _points;
     CCLabelTTF *_scoreLabel;
+    CCLabelTTF *_highScoreLabel;
 }
 - (void)didLoadFromCCB {
     self.userInteractionEnabled = TRUE;
@@ -58,6 +59,11 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
     [self spawnBoth];
     [self spawnBoth];
     _scrollSpeed = 80.f;
+    int currentHighScore = [self getHighScore];
+    if (currentHighScore == NULL) {
+        [self setHighScore:0];
+    }
+    _highScoreLabel.string = [NSString stringWithFormat:@"Best: %d", currentHighScore];
 }
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
@@ -68,7 +74,6 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
             _hero.position = ccp(_hero.position.x, 255);
         }
     }
-    
 }
 
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero obstacle:(CCNode *)obstacle {
@@ -81,7 +86,28 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
     _points++;
     _scrollSpeed = _scrollSpeed + 5;
     _scoreLabel.string = [NSString stringWithFormat:@"Score: %d", _points];
+    
+    int currentHighScore = [self getHighScore];
+    _highScoreLabel.string = [NSString stringWithFormat:@"Best: %d", currentHighScore];
+    if (_points > currentHighScore) {
+        [self setHighScore:_points];
+        _highScoreLabel.string = [NSString stringWithFormat:@"Best: %d", _points];
+
+    }
+
     return TRUE;
+}
+
+-(void)setHighScore:(int)_score {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setInteger:_score forKey:@"HighScore"];
+    [defaults synchronize];
+}
+
+-(int)getHighScore{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger theHighScore = [defaults integerForKey:@"HighScore"];
+    return theHighScore;
 }
 
 - (void)spawnBoth { 
