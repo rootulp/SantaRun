@@ -71,8 +71,7 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
     
 }
 
--(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero house:(CCNode *)house
-{
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero obstacle:(CCNode *)obstacle {
     [self gameOver];
     return TRUE;
 }

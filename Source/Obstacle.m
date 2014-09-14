@@ -9,12 +9,12 @@
 
 #import "Obstacle.h"
 @implementation Obstacle {
-    CCNode *_house;
+    CCNode *_obstacle;
 }
 
 - (void)didLoadFromCCB {
-    _house.physicsBody.collisionType = @"house";
-    _house.physicsBody.sensor = TRUE;
+    _obstacle.physicsBody.collisionType = @"obstacle";
+    _obstacle.physicsBody.sensor = TRUE;
 }
 
 @end
