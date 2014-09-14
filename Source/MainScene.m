@@ -79,6 +79,7 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
 -(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero present:(CCNode *)present {
     [present removeFromParent];
     _points++;
+    _scrollSpeed = _scrollSpeed + 5;
     _scoreLabel.string = [NSString stringWithFormat:@"Score: %d", _points];
     return TRUE;
 }
