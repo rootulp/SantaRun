@@ -10,7 +10,8 @@
 #import "Obstacle.h"
 #import "Present.h"
 
-static const CGFloat scrollSpeed = 75.f;
+BOOL _gameOver;
+CGFloat _scrollSpeed;
 static const CGFloat firstObstaclePosition = 150.f;
 static const CGFloat firstPresentPosition = 150.f;
 static const CGFloat distanceBetweenObstacles = 150.f;
@@ -27,6 +28,7 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
     CCNode *_ground2;
     CCNode *_ground_small1;
     CCNode *_ground_small2;
+    CCButton *_restartButton;
     NSArray *_grounds;
     NSArray *_grounds_small;
     NSMutableArray *_obstacles;
@@ -55,19 +57,24 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
     [self spawnBoth];
     [self spawnBoth];
     [self spawnBoth];
+    _scrollSpeed = 80.f;
 }
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    if (_hero.position.y > 200) {
-        _hero.position = ccp(_hero.position.x, 118);
-    } else {
-        _hero.position = ccp(_hero.position.x, 255);
+    if(!_gameOver) {
+        if (_hero.position.y > 200) {
+            _hero.position = ccp(_hero.position.x, 118);
+        } else {
+            _hero.position = ccp(_hero.position.x, 255);
+        }
     }
     
 }
 
--(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero house:(CCNode *)house {
+-(BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair hero:(CCNode *)hero house:(CCNode *)house
+{
     NSLog(@"Game Over");
+    [self gameOver];
     return TRUE;
 }
 
@@ -75,7 +82,7 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
     [present removeFromParent];
     NSLog(@"CONTACT");
     _points++;
-    _scoreLabel.string = [NSString stringWithFormat:@"%d", _points];
+    _scoreLabel.string = [NSString stringWithFormat:@"Score: %d", _points];
     return TRUE;
 }
 
@@ -128,8 +135,8 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
 }
 
 - (void)update:(CCTime)delta {
-    _hero.position = ccp(_hero.position.x + delta * scrollSpeed, _hero.position.y);
-    _physicsNode.position = ccp(_physicsNode.position.x - (scrollSpeed *delta), _physicsNode.position.y);
+    _hero.position = ccp(_hero.position.x + delta * _scrollSpeed, _hero.position.y);
+    _physicsNode.position = ccp(_physicsNode.position.x - (_scrollSpeed *delta), _physicsNode.position.y);
     // loop the ground
     for (CCNode *ground in _grounds) {
         // get the world position of the ground
@@ -173,5 +180,26 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
         [self spawnBoth];
     }
     
+}
+
+- (void)gameOver {
+    if (!_gameOver) {
+        _scrollSpeed = 0.f;
+        _gameOver = TRUE;
+        _restartButton.visible = TRUE;
+        [_hero stopAllActions];
+        [_hero.animationManager setPaused:YES];
+        CCActionMoveBy *moveBy = [CCActionMoveBy actionWithDuration:0.2f position:ccp(-2, 2)];
+        CCActionInterval *reverseMovement = [moveBy reverse];
+        CCActionSequence *shakeSequence = [CCActionSequence actionWithArray:@[moveBy, reverseMovement]];
+        CCActionEaseBounce *bounce = [CCActionEaseBounce actionWithAction:shakeSequence];
+        [self runAction:bounce];
+    }
+}
+
+- (void)restart {
+    _gameOver = FALSE;
+    CCScene *scene = [CCBReader loadAsScene:@"MainScene"];
+    [[CCDirector sharedDirector] replaceScene:scene];
 }
 @end
