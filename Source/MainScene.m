@@ -84,7 +84,7 @@ static const CGFloat distanceBetweenPresentAndCeiling = 225.f;
     return TRUE;
 }
 
-- (void)spawnBoth {
+- (void)spawnBoth { 
     #define ARC4RANDOM_MAX      0x100000000
     CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
     if (random > .5) {
